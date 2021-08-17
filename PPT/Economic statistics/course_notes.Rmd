@@ -23,17 +23,13 @@ tinytex::install_tinytex(),
 tlmgr_search('framed.sty')  % 搜索包含 framed.sty 文件的 LaTeX 包  
 tlmgr_install('framed')     % 安装 framed 包  
 tlmgr_update()              % 更新 TeX Live  
-```latex
-\documentclass{ctexart} % 或者ctexrep/ctexbook
-```
-或者
 
-```latex
-\usepackage{ctex}
-```
+latex的使用：
 
-就轻松搞定中文LaTeX排版问题。
++ documentclass{ctexart} % 或者ctexrep/ctexbook
 
++ usepackage{ctex}
+可以添加文件头：
 ```yaml
 ---
 documentclass: ctexart
@@ -41,17 +37,8 @@ output: rticles::ctex
 ---
 ```
 
-`rticles::ctex`的参数都是普通的`pdf_document`参数，参见文档**rmarkdown**包的文档，这里就不赘述了。
-Windows和Mac用户应该都已经有自带的中文字体了。Linux用户可以考虑 [Fandol字体](http://ctan.org/pkg/fandol)，它号称是免费的，不过我们也没太搞清楚它的来头。如果你不想操心这些问题，我们强烈建议你卸载你当前的 LaTeX 套装（TeX Live 或 MiKTeX 或 MacTeX），换上 TinyTeX，一切将会自动化搞定。
-
-```{r eval=FALSE}
-devtools::install_github(c('rstudio/rmarkdown', 'yihui/tinytex'))
-tinytex::install_tinytex()
-```
-
-# R代码段
-
-R代码用R Markdown的语法嵌入，即三个反引号开始一段代码```` ```{r} ````和三个反引号```` ``` ```` 结束一段代码：
+# R代码段插入  
+&emsp;R代码用R Markdown的语法嵌入，即三个反引号开始一段代码```` ```{r} ````和三个反引号```` ``` ```` 结束一段代码：
 
 ```{r}
 options(digits = 4)
@@ -59,21 +46,20 @@ fit = lm(dist ~ speed, data = cars)
 coef(summary(fit))
 b = coef(fit)
 ```
-
 上面回归方程中的斜率是`r b[2]`，完整的回归方程为：$$ Y = `r b[1]` + `r b[2]`x$$
 
-画图当然也是木有问题的啦，想画就说嘛，不说我怎么知道你想画呢？
+画图可以直接通过命令方式实现：  
 
 ```{r scatter, fig.cap='cars数据散点图以及回归直线。'}
 par(mar = c(4, 4, .1, .1), las = 1)
 plot(cars, pch = 19)
 abline(fit, col = 'red')
 ```
+# 主题修改  
 
-# 源代码控
-
-这里提供的rticles模板可能由于种种原因不能满足客官的要求，LaTeX用户就是这样永无止境地调格式（唉，跟Word用户到底有啥区别呢）。若真是需要调整，你可以复制一份默认模板去改。默认模板来自 Pandoc：https://github.com/jgm/pandoc/blob/master/data/templates/default.latex 它是一个文本文件。若熟悉LaTeX的话一看就明白，只不过里面有些Pandoc变量而已。
+&emsp;Rstudio提供的rticles模板可能由于种种原因不能满足论文格式的要求，LaTeX用户就是这样永无止境地调格式。   Pandoc：https://github.com/jgm/pandoc/blob/master/data/templates/default.latex 它是一个文本文件。若熟悉LaTeX的话一看就明白，只不过里面有些Pandoc变量而已。
 
 # 小结
+&emsp;Rmarkdown是一款markdown,可以通过其他的方式打开。它不能像word那样，当时修改就可以看到效果。  
+但它是一款可以运行r代码的markdown。  
 
-可以通过XeLaTeX将中文RMarkdown转化为PDF文档，打开RStudio，菜单File > New File > R Markdown，然后从模板中选择CTeX Documents，搞定。
