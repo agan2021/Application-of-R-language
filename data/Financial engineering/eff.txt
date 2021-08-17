@@ -1,0 +1,27 @@
+##债券价格
+bpd<-function(cf,par,y,n){
+  t=1:n
+  a=cf/(1+y)^t
+  b=par/(1+y)^n
+  p=sum(a,b)
+}
+##到期收益率
+byield<-function(n,cf,bp){
+ accu=1e-5
+ maxinter=200
+ bot=0.00;top=1.00
+ while(res>bp) {top=top*2}
+ y=0.5*(top+bot)
+for (i in 0:maxinter) {
+  diff=res-bp
+  if (abs(diff)<accu) {return(y)}
+  if (diff>0.0) 
+    bot=y
+  else
+    top=y
+  y=0.5*(top+bot)
+}
+ {return(y)}
+}
+
+##par=100,cf=2.5,n=10,p=110,求债券的到期收益率y

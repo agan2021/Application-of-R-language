@@ -12,7 +12,9 @@ output:
     toc: yes
 ---
 
-# 引言
+# 第一章 R语言概述
+
+## 引言
 
 在进行编写rmarkdown的时候，首先要简单的学一些latex,但在rmarkdow中显示中文有点麻烦。中文LaTeX文档并非难题，需要借助 [CTeX](http://ctex.org) 才行。最佳方式就是使用tinytex包。需要注意的是电脑上其他latex版本会和它冲突。可以在Rtudion上进行设置，  
 选择tool--global option--sweave--xelatex，运行latex选用tinytex.  
@@ -37,7 +39,7 @@ output: rticles::ctex
 ---
 ```
 
-# R代码段插入  
+## R代码段插入  
 &emsp;R代码用R Markdown的语法嵌入，即三个反引号开始一段代码```` ```{r} ````和三个反引号```` ``` ```` 结束一段代码：
 
 ```{r}
@@ -55,11 +57,59 @@ par(mar = c(4, 4, .1, .1), las = 1)
 plot(cars, pch = 19)
 abline(fit, col = 'red')
 ```
-# 主题修改  
 
+## 主题修改
 &emsp;Rstudio提供的rticles模板可能由于种种原因不能满足论文格式的要求，LaTeX用户就是这样永无止境地调格式。   Pandoc：https://github.com/jgm/pandoc/blob/master/data/templates/default.latex 它是一个文本文件。若熟悉LaTeX的话一看就明白，只不过里面有些Pandoc变量而已。
 
-# 小结
+## 小结
 &emsp;Rmarkdown是一款markdown,可以通过其他的方式打开。它不能像word那样，当时修改就可以看到效果。  
 但它是一款可以运行r代码的markdown。  
+
+# 第二章 数据对象与数据读写
+## 查看数据类型
+
+## 判断数据结构 
+
+## 读写不同数据源的数据 
+
+
+# 第三章 数据基本处理
+## 数据属性
+
+## 清洗数据
+
+## 选取变量及数据 
+
+## 整合数据
+
+## 字符数据处理 
+
+
+
+# 第三章 函数与控制流
+## 常用函数
+
+
+## 条件分支语句 
+
+
+## 循环语句 
+
+
+## 编写自定义函数 
+
+
+# 绘图
+## 绘制基本图形
+
+## 修改图形参数
+
+
+## 绘制组合图形
+
+
+
+## 高级绘图
+
+
 
