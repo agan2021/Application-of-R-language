@@ -1,0 +1,925 @@
+---
+title: "《R语言应用》课程教案"
+author:
+  - 宁红泉
+documentclass: ctexart
+keywords:
+  - 金融
+  - R Markdown
+output:
+  rticles::ctex:
+    fig_caption: yes
+    number_sections: yes
+    toc: yes
+    fig_width: 4
+    fig_height: 3
+---
+
+
+# 第一章 R语言介绍
+教学目的：  
+
+          1.熟悉R软件的特点；  
+          2.了解各种金融计量软件的特点；  
+          3.掌握R计量软件使用范围以及编程基础特点。  
+教学重难点：  
+        
+         1.重点：掌握R计量软件使用范围以及编程基础特点；  
+         2.难点：了解R计量软件的特点；  
+
+## 课程工具介绍
+学生在课程中推进使用rmarkdown,它的编辑器是rstudio。
+在进行编写rmarkdown的时候，首先要简单的学一些latex,但在rmarkdow中显示中文有点麻烦。中文LaTeX文档并非难题，需要借助 [CTeX](http://ctex.org) 才行。最佳方式就是使用tinytex包。需要注意的是电脑上其他latex版本会和它冲突。可以在Rtudion上进行设置，  
+选择tool--global option--sweave--xelatex，运行latex选用tinytex.  
+安装tinytex的步骤：
+install.packages("devtools"),library(devtools),  
+devtools::install_github('yihui/tinytex')  
+tinytex::install_tinytex(),  
+tlmgr_search('framed.sty')  % 搜索包含 framed.sty 文件的 LaTeX 包  
+tlmgr_install('framed')     % 安装 framed 包  
+tlmgr_update()              % 更新 TeX Live  
+
+latex的使用：
+
++ documentclass{ctexart} % 或者ctexrep/ctexbook
++ usepackage{ctex}
+可以添加文件头：
+```yaml
+---
+documentclass: ctexart
+output: rticles::ctex
+---
+```
+
+### R代码段插入  
+&emsp;R代码用R Markdown的语法嵌入，即三个反引号开始一段代码```` ```{r} ````和三个反引号```` ``` ```` 结束一段代码：
+
+```{r}
+options(digits = 4)
+fit = lm(dist ~ speed, data = cars)
+coef(summary(fit))
+b = coef(fit)
+```
+上面回归方程中的斜率是`r b[2]`，完整的回归方程为：$$ Y = `r b[1]` + `r b[2]`x$$
+
+画图可以直接通过命令方式实现：  
+
+```{r scatter, fig.cap='cars数据散点图以及回归直线。'}
+par(mar = c(4, 4, .1, .1), las = 1)
+plot(cars, pch = 19)
+abline(fit, col = 'red')
+```
+
+### 主题修改
+&emsp;Rstudio提供的rticles模板可能由于种种原因不能满足论文格式的要求，LaTeX用户就是这样永无止境地调格式。   
+Pandoc：https://github.com/jgm/pandoc/blob/master/data/templates/default.latex    
+它是一个文本文件。若熟悉LaTeX的话一看就明白，只不过里面有些Pandoc变量而已。      
+
+### 小结
+Rmarkdown是一款markdown,可以通过其他的方式打开。它不能像word那样，当时修改就可以看到效果。  
+但它是一款可以运行r代码的markdown。  
+
+
+## 什么是R语言 
+R是用于统计分析、绘图的语言和操作环境。R是属于GNU系统的一个自由、免费、开源的软件，  
+它是一个用于统计计算和统计制图的优秀工具,R语言是主要用于统计分析、绘图的语言和操作环境。 
+R本来是由来自新西兰奥克兰大学的Ross Ihaka和Robert Gentleman 开发。  
+
+## R语言能干什么？　
+
+* R是科学计算的强大工具包。
+* R主要擅长统计分析方面工作。
+* R具有顶尖的绘图功能。
+* R的交互式数据分析功能强大且灵活。
+* R可以轻松地从多个数据源导入数据。
+* 金融领域数据统计与计算的强大工具。
+* 数据挖掘和机器学习领域的必备工具。
+
+## R语言有什么优势
+
+* R是免费的。
+* R主要擅长统计分析方面工作
+* R具有顶尖的绘图功能
+* R的交互式数据分析功能强大且灵活
+* R可以轻松地从多个数据源导入数据
+* R的更新速度很快，包含最新的大量统计方法和案例
+* R也可以很美。
+
+## 经济与金融计量软件简介
+
+1. Eviews软件
+2. SAS软件
+3. Ｍatlab
+4. SPSS
+5. Stata  
+
+通过利用实际的软件操作，简单的介绍它们之间的各自特点。重点介绍R与python软件的开源思想及它们的发展趋势。  
+
+## 作业
+1.统计学与经济计量学的关系是什么？R软件在其中有什么作用？
+2.自行下载topyra软件，了解什么是markdown？
+
+# 第二章 R语言的下载、安装与启动
+教学目的：  
+
+          1.熟悉R语言使用流程；  
+          2.了解选择R语言编程的意义；  
+          3.掌握使用R语言正确设置。  
+教学重难点：  
+        
+         1.重点：掌握R计量软件界面与特点；  
+         2.难点：正确设置R软件；  
+
+## R语言的介绍
+为什么选择R语言？  
+
+* 免费的软件
+* 编程方便，语言灵活，图形功能强大
+* 优秀的内在帮助系统
+* 高质量、广泛的统计分析、数据挖掘平台
+* 国际上R语言已然是专业数据分析领域的标准
+R的起源
+
+* R是S语言的一种实现。S语言是由 AT&T贝尔实验室开发的一种用来进行数据探索、统计分析、作图的解释型语言。  
+* R的使用与S-PLUS有很多类似之处，两个软件有一定的兼容性。 
+## R与Rstudio软件下载与安装
+R可以在CRAN(Comprehensive R Archive Network)  
+http://cran.r-project.org/mirrors.html上免费下载。  
+（利用R软件进行现场演示操作，然后要求学生课堂练习）
+
+## R与Rstudio软件的界面介绍
+R自身带的编辑器很不好用，因此可以寻找很多的替代方案，比如可以选择Emacs和Vim来替代。这里推荐Rstudio，
+它是专门用于R语言环境的IDE。  
+Rstudio可以从其官网http://www.rstudio.com/上免费下载安装。
+
+## R与Rstudio个性化设置
+
+### 获取R的帮助
+R提供了大量的帮助功能，学会如何使用这些帮助文档可以在很大程度上助力你的编程工作。
+通过命令窗口输入代码查看帮助。
+
+![help命令使用](J:\imag\help.png)
+
+课堂演示，学生操作练习。  
+练习例子：查看tseries包，查看数据说明。  
+
+### R工作目录
+
+* 工作空间(workspace)就是当前R的工作环境，它储存着所有用户定义的对象(向量、矩阵、函数、数据框、列表）。
+* 在一个R会话结束时，你可以将当前工作空间保存到一个镜像中，并在下次启动R时自动载入它。
+* 当前的工作目录(working directory)是R用来读取文件和保存结果的默认目录。
+* 可以使用函数getwd( )来查看当前的工作目录，或使用函数setwd( )设定当前的工作目录。
+* 如果需要读入一个不在当前工作目录下的文件，则需要在调用语句中写明完整的路径。
+
+### Rstudio常用命令
+
+![Rstudio常用命令](J:\imag\studio_comm.png)
+
+### R包介绍
+
+* 包是R函数、数据、预编译代码以一种定义完善的格式组成的集合。
+* 计算机上存储包的目录称为库(library)。
+* 函数.libPaths()能够显示库所在的位置。
+* 函数library()则可以显示库中有哪些包。
+* R自带了一系列默认包(包括base、datasets、utils、grDevices、graphics、stats以及methods),它们提供了种类繁多的默认函数和数据集。
+其他包可通过下载来进行安装。
+* 使用命令install.packages("package_name","dir")即可。
+* 查看包帮助：library(help="package_name")
+* 加载包：library(package_name) 或者 require(package_name)
+
+### 常用包
+
+* 空间数据分析类
+* 机器学习与统计学习类
+* 多元统计类
+* 药物动力学数据分析类
+* 计量经济类
+* 金融分析类
+* 并行计算类
+* 数据库访问类
+
+## 作业
+
+1.下载安装R与Rstudio，并正确设置界面。    
+2. 下载包，并使用包查看相关函数命令及数据集。
+
+# 第三章 R 语言的基本概念和语法
+教学目的：  
+
+          1.熟悉R语言对象的属性与分类；  
+          2.了解R语言各类对象的建立与存取；  
+          3.掌握R编程基础知识。  
+教学重难点：  
+        
+         1.重点：掌握R编程基础知识；  
+         2.难点：掌握R软件的编程方法；  
+
+## 数据对象与数据读写
+
+### 数据类型
+基本赋值语句
+```{r}
+x<-8
+```
+R 语言的对象常见的数据类型有：字符型、数值型、逻辑型、复数型。此外，也可能是缺省值(NA)。
+
+![R数据类型](J:\imag\data_type.png)
+
+对于未知类型的对象，在R中有3个函数可以查看对象的类型:class、mode、typeof。  
+使用格式：  class(x)  
+其中x为需要查看类型的对象，mode、typeof函数使用格式与class函数相同。  
+实例：创建3个不同类型的数据，展示3个辨别函数的区别。
+```{r}
+df <- data.frame(c1 = letters[1:3], c2 = 1:3, c3 = c(1, -1, 3.0), 
+    stringsAsFactors = F)  
+sapply(df, mode)
+sapply(df, class) 
+sapply(df, typeof)
+```
+在展现数据的细节上，mode<class<typeof。mode函数只查看数据的大类，class函数查看数据的类，typeof函数则更加细化，查看数据的细类。
+
+### 数据结构
+R拥有许多用于存储数据的对象类型，包括向量、矩阵、数组、数据框和列表。
+
+![R数据结构](J:\imag\data_struct.png)
+
+1.数据框(data frame)是R中用于存储数据的一种结构：列表示变量，行表示观测。  
+在同一个数据框中可以存储不同类型(如数值型、字符型)的变量。  
+2.向量是以一维数组的方法管理数据的一种对象类型。可以说向量是R语言中最基本的数据类型，很多算法函数都是以向量的形式输入的。  
+向量可以是数值型、字符型、逻辑值型(T、F) 和复数型。
+```{r}
+x1 <- c(1, 2, 3, 4)  # 创建数值型向量,可写成x1=c(1:4)
+x2 <- c("a", "b", "c", "d")  # 创建字符型变量
+x3 <- c(TRUE, FALSE, FALSE, TRUE)  # 创建逻辑型变量
+```
+字符型、逻辑值型(T、F)、数值型和复数型；  
+一个向量的所有元素都必须属于相同的类型。如果不是，R将强制执行类型转换。  
+3.R语言最强大的方面之一就是函数的向量化。
+```{r}
+w<-seq(1:10)
+x<-sqrt(w)
+tow_number<-w+x
+```
+提问：如果两个向量长度不同，能相加吗？  
+4.特殊向量的创建  
+
+* seq(1:n:m)
+* req(x,n)
+5.索引向量  
+只要访问向量中的部分或个别元素。这就是所谓的索引，它用方括号[] 来实现。
+
+![向量索引](J:\imag\vector_index.png)
+
+R语言中，提供如下多种索引方法。  
+
+* 给向量传入正数，它会返回此位置上的向量元素切片。它的第一个位置是 1（ 而不像其他某些语言一样是0）。
+* 给向量传入负数，它会返回一个向量切片，它将包含除了这些位置以外的所有元素。
+* 给向量传入一个逻辑向量，它会返回一个向量切片，里面只包含索引为 TRUE 的元素。
+* 对于已命名的向量，给向量传入命名的字符向量，将会返回向量中包含这些名字的元素切片。
+
+另外，还可以通过掩码方式进行操作：  
+ 
+* which 函数将返回逻辑向量中为TRUE 的位置。
+R语言可以对已经创建好的向量直接进行元素扩展及删除等编辑操作。  
+向量中元素的删除通过减号加元素下标的形式实现。  
+
+向量排序（sort函数)  
+
+![向量排序](J:\imag\vector_sort.png)
+
+6.矩阵和数组  
+利用矩阵matrix可以描述二维数据，和向量相似，其内部元素可以是实数、复数、字符、逻辑型数据。  
+矩阵matrix使用两个下标来访问元素，A[i,j]表示矩阵A第i行、第j列的元素。  
+多维数组array可以描述多维数据。array有一个特征属性叫维数向量（dim属性），  
+它的长度是多维数组的维数，dim内的元素则是对应维度的长度。  
+矩阵是数组的特殊情况，它具有两个维度。    
+
+**矩阵的合并**
+
+* cbind函数把其自变量横向拼成一个大矩阵，rbind函数把其自变量纵向拼成一个大矩阵。
+* cbind函数的自变量是矩阵或看作列向量的向量时，自变量的高度（行数）应该相等。
+
+矩阵的拉直  
+设A是一个矩阵，则函数as.vector(A)可以将矩阵转化为向量。  
+```{r}
+A <- matrix(1:6,2,3)
+AA<-as.vector(A)
+```
+矩阵的行或列计算的函数  
+
+* colSums    对矩阵各列求和
+* colMeans 求矩阵各列的均值
+* rowSums   对矩阵各行求和
+* rowMeans 求矩阵各列的均值
+
+矩阵运算函数：
+
+![矩阵运算](J:\imag\matrix1.png)
+
+**数组创建 **   
+数组是矩阵的扩展，它把数据的维度扩展到两个以上。可以通过array函数方便地创建数组。
+
+* 对于矩阵和数组，dim 函数将返回其维度的整数值向量。
+* 对于矩阵，函数nrow 和ncol 将分别返回行数和列数。
+
+**列表和数据框**   
+列表list和数据框data.frame也是一个二维数据。 
+在使用R语言进行数据分析和挖掘的过程中，向量和数据框的使用频率是最高的，list则在存储较复杂的数据时作为数据对象类型。  
+**数据框创建**  
+data.frame函数可以直接把多个向量建立为一个数据框，并为列设置名称。  
+```{}
+my.datasheet <- data.frame(site = c('A','B','A','A','B'),  
++season = c('winter','summer','summer','spring','fall'),  
++pH = c(7.4,6.3,8.6,7.2,8.9))  
+names(my.datasheet)  
+names(my.datasheet)
+```
+可以通过names(<数据框>)来读取并编辑列名称。  
+
+**数据框索引**
+通过<数据框对象>[行下标, ]，可以直接获取相应行的所有元素，并以数据框对象形式返回。 
+**列表创建**  
+```{}
+(my.list <- list(stud.id = 34453,
++                  stud.name = '张三',
++                  stud.marks = c(14.3,12,15,19)))
+$stud.name
+$stud.marks
+```
+
+### 数据读写
+R暂时没有很好用的可视化的数据导入工具，所有需要使用命令来导入导出数据。  
+如果使用Rstudio编辑器，可以使用其提供的简单的数据导入功能。  
+使用它可以从txt、csv等文本格式的文件或者从网络中获取数据。  
+（使用软件进行演示） 
+
+![数据源读取类型](J:\imag\read_data_type.png)
+
+1. CSV文件读取  
+library(learningr)  
+deer_file <- system.file('extdata’,'RedDeerEndocranialvolume.dlm',package ='learningr')    
+deer_data <- read.table(deer_file,header = TRUE,fill = TRUE)    
+head(deer_data)  
+
+2. 在Windows系统中，可以使用RODBC包来访问Excel文件，或直接用xlsx包和XLConnect包来访问Excel2007文件.  
+其他的数据类型读取，不作介绍，大家可以help相关函数与包。  
+
+### 作业
+要求学生自行下载一只股票的数据，然后利用R软件读取数据，并保存。
+
+## 数据集的基本处理 
+1.访问数据框变量  
+```{}
+data.iris <- data.frame(Sepal.Length = c(5.1, 4.9, 4.7, 4.6), 
+Sepal.Width = c(3.5, 3.0, 3.2, 3.1),
+Petal.Length = c(1.4, 1.4, 1.3, 1.5), Pe.tal.Width = rep(0.2, 4))
+data.iris[, 1]  # 索引第一列
+data.iris$Sepal.Length  # 按列的名称索引
+data.iris[1:3, ]  # 索引第一至三行
+subset(data.iris, Sepal.Length < 5)  # 按条件索引行  
+data.iris["Sepal.Length"][1]  # 索引Sepal.Length列第一个元素
+```
+2. 如何创建新变量?
+```{}
+mydata <- data.frame(x1 = c(2, 2, 6, 4), x2 = c(3, 4, 2, 8))
+# 创建新变量方法一
+mydata$sumx <- mydata$x1 + mydata$x2
+mydata$meanx <- (mydata$x1 + mydata$x2) / 2
+# 创建新变量方法二
+mydata <- transform(mydata, sumx = x1 + x2, meanx = (x1 + x2) / 2)
+```
+3.修改变量名  
+交互式编辑器修改变量名  
+(软件演示操作)  
+
+### 数据属性列增加
+1.变量的重命名  
+R修改变量名的方式有很多种，常用rename函数，names函数，colnames和rownames等函数实现对变量名字的修改。  
+**rename函数**    
+reshape包中有一个rename函数，可用于修改数据框和列表的变量名，但不能用于修改矩阵的变量名。  
+使用格式：  
+rename(dataframe, c(oldname = "newname", oldname = "newname", …))  
+names()函数和rename()函数一样，可修改数据框和列表的变量名，而不能用于修改矩阵的变量名，不同点在于，  
+names()函数会在原数据集中修改变量名，但rename()函数并不会直接改变原数据集中的变量名。  
+使用格式：  
+names(x) <- value  
+2.属性列增加  
+colnames()函数和rownames()函数  
+rownames()和colnames()函数可修改矩阵行名和列名，同时，也能够修改数据框的行名和列名。  
+使用格式：  
+rownames(x) <- value  
+rownames(x) <- value  
+
+### 清洗数据  
+**缺失值分析**  
+在R中，缺失值以符号NA（Not Available，不可用）表示。不可能出现的值（例如，被0除的结果）
+通过符号NaN（Not a Number，非数值）来表示。与SAS等程序不同，R中字符型和数值型数据使用的缺失值符号是相同的。
+
+![缺失值处理](J:\imag\na_deal.png)
+
+complete.cases  检查哪行有缺失值。  
+na.omit  能删除数据框中所有带缺失值的行  
+
+**处理日期变量**  
+日期值通常以字符串的形式传入R中，然后转化为以数值形式存储的日期变量。在R中，  
+字符型的日期值无法进行日期变量的计算，因此可通过日期值处理函数，将字符型的日期值转换成日期变量。
+
+![日期数据处理](J:\imag\date_deal.png)
+
+**日期格式**
+
+![日期格式](J:\imag\date_format.png)
+
+（利用软件演示操作）  
+**处理日期变量**  
+R软件处理日期函数主要有两个：strptime,strftime  
+x <- strptime(x, "%Y-%m-%d %H:%M:%S")  %用于输入数据
+strftime(x, format = "%Y/%m/%d")  %用于输出数据  
+format(x,"%d/%m/%Y")，%输出的格式转换成format定义的格式   
+**数据排序**  
+R中涉及排序的基本函数有order、sort和rank三个。下面看下其基本用法：  
+
+* sort(x, decreasing = FALSE,  ...)
+* order(...,  na.last = TRUE, decreasing = FALSE)
+* rank(x, na.last = TRUE, ties.method = c("average",  "first",  "random",  "max", "min")) 
+演示列子：
+```{r}
+x <- c(19, 84, 64, 2)
+order(x)
+rank(x)
+sort(x)
+```
+(利用列子说明三者的区别)  
+
+### 选取变量及数据
+**合并数据集**  
+数据框的编辑可以通过rbind和cbind函数。需要注意的是，使用rbind和cbind函数对于数据框而言，  
+分别为增加新的样本数据和增加新属性变量。  
+rbind的自变量的宽度（列数）应该与原数据框的宽度相等，cbind的自变量的高度（行数）应该与原数据框的高度相等。  
+**选取变量及数据**  
+删除向量中的变量  
+vector <- c(1, 2, 3, 4)  
+vector[-1]  % 删除第一个元素  
+使用subset函数选取数据  
+subset函数是一种较为简便的方法用来选取变量与观测变量，功能为选取变量与观测变量.  
+代码：
+```{r}
+df1 <- data.frame(name = c("aa", "bb", "cc"), age = c(20, 29, 30), 
+                  sex = c("f", "m", "f"))
+selectresult1 <- subset(df1, name == "aa", select = c(age, sex))
+selectresult2 <- subset(df1, name == "aa" & sex == "f", select = c(age, sex))
+```
+**随机抽样**  
+简单随机抽样可通过srswr函数，srswor和sample函数实现。srswr函数和srswor函数在sampling包中，  
+使用前需要先加载sampling包。下面看下其基本用法：  
+srswr(n, N)  
+srswor(n, N)  
+sample(x, size, replace = FALSE, prob = NULL)  
+
+### 整合数据
+使用SQL语句操作数据:  
+name<-c(rep("张三", 1, 3), rep("李四", 3))  
+subject<-c("数学", "语文", "英语", "数学", "语文", "英语")  
+score<-c(89, 80, 70, 90, 70, 80)  
+stuid<-c(1, 1, 1, 2, 2, 2)  
+stuscore<-data.frame(name, subject, score, stuid)  
+library(sqldf)  
+% 计算每个人的总成绩并排名(要求显示字段：姓名，总成绩)  
+sqldf("select name, sum(score) as allscore from stuscore group by name order 
+
+**数据汇总统计**  
+使用格式：aggregate(x, by, FUN)  
+粘贴数据结构——R中合并两个数据集可以通过专门的函数merge( )来实现。  
+在R中，数据融合通过reshape2包中的melt()函数实现。  
+使用格式：  
+melt(data, varnames, value.name = "value", na.rm = FALSE)  
+**数据重塑**  
+melt获得的数据可以用 acast 或 dcast 还原。acast获得数组，dcast获得数据框。  
+使用格式：  
+cast(data, formula, fun.aggregate = NULL,…)  
+
+### 处理字符数据
+正则表达式是用于描述或匹配一个文本集合的表达式。所有英文字母、数字和  
+很多可显示的字符本身就是正则表达式，用于匹配它们自己。 
+
+![常用字符串式](J:\imag\com_str.png)
+
+常用的字符串处理函数:
+
+![字符串处理函数](J:\imag\str_func.png)
+
+（利用软件演示正则条件处理函数）
+学生练习  
+
+## 函数与控制流 
+
+### 常用函数处理数据
+和其它数据分析软件一样，在R语言中，也有许许多多可应用于数值计算和统计分析的数值函数，  
+主要可以分成数学函数，统计函数和概率函数三大类。
+（利用PPT简单讲解）  
+1.apply家族  
+apply包括apply、lapply、tapply、sapply、vapply、mapply等几个函数，这些函数都能够  
+把函数按照某种方式运用于数据。  
+这些函数的使用方法为： 
+
+* apply(x, MARGIN, FUN, …)  #把FUN函数运用到x数据的第MARGIN维度上
+* lapply(x, FUN, …)  #把函数FUN运用到列表的每一个元素
+* tapply(x, INDEX, FUN=NULL, …, simplify=TRUE) #把FUN函数根据INDEX索引应用到x数据
+* sapply(x, FUN, …, simplify=TRUE, USE.NAMES=TRUE)   
+ %是lapply函数更加友好的版本，可以使用simplify参数来调整输出的数据格式
+* vapply(x, FUN, FUN.VALUE, …, USE.NAMES=TRUE) 
+%类似于sapply，但是返回值只能按照预先制定的方式输出  
+* mapply(FUN, …, MoreArgs = NULL, SIMPLIFY = TRUE, USE.NAMES = TRUE) #运用于多变量情况
+（利用软件演示apply函数示例） 
+
+### 编写条件分支语句
+
+### 编写循环语句
+1.if/else判断语句   
+在R语言中创建if-else语句的基本语法如下所示。  
+```{}
+if (boolean expression) {
+	// statement(s) will execute if the boolean expression is true.
+} else {
+	// statement(s) will execute if the boolean expression is false.
+}
+```
+if/else判断语句
+
+![if语句](J:\imag\if.png)
+
+例子：if语句  
+```{r}
+# if-else语句
+x <- c("what","is","truth")
+if ("Truth" %in% x) {
+  print("Truth is found")
+} else {
+  print("Truth is not found")
+}
+```
+该语句可以实现多重条件的嵌套，三重嵌套的条件语句的基本语法如下所示。  
+```
+if (boolean_expression 1) {
+	 // Executes when the boolean expression 1 is true.
+} else if ( boolean_expression 2) {
+	// Executes when the boolean expression 2 is true.
+} else if ( boolean_expression 3) {
+	// Executes when the boolean expression 3 is true.
+} else {
+	// executes when none of the above condition is true.
+```
+2.switch分支语句  
+switch分支语句的使用格式如下:  
+switch(expression,list)  
+3.for循环语句  
+使用格式如下:  
+for (name in expr1) {expr2}  
+在循环过程中，若需要输出每次循环的结果，可使用cat函数或print函数，接下来将介绍cat函数的使用方法.  
+使用格式如下：  
+cat(expr1,expr2,…)  
+3.while循环语句  
+使用格式如下：  
+while (cond) {expr}  
+4.repeat-break循环语句  
+使用格式如下：  
+repeat expr或者repeat {if(cond){break}}  
+
+### 编写自定义函数
+一个函数的结构大致如下所示。  
+```{}
+myfunction <- function(arglist) {
+	statements
+	return(object)
+}
+```
+函数体通常包括三个部分，异常处理、运算过程和返回值.  
+
+* 异常处理：输入的数据不能满足函数计算的要求，或者类型不符，这时应设计相应的机制提示哪个地方出现错误。
+* 运算过程：包括具体的运算步骤。运算过程和该函数要完成的功能有关。
+* 返回值：用return函数给出，返回对象的数据类型是任意的，从标量到列表皆可。函数在内部处理过程中，  
+一旦遇到return，就会终止运行，将return内的数据作为函数处理的结果给出。
+
+## 绘制基本图形
+
+### 绘制基础图形
+分析数据第一件要做的事情就是观察它。对于每个变量需要注意的是最常见的值，值域，不寻常的观测，  
+多个变量的关系，是否符合模型假设等。对数据进行可视化就显的很重要.
+
+![画图函数](J:\imag\plot.png)
+
+![画图函数](J:\imag\plot1.png)
+
+1.直方图  
+在R中，hist函数可用于绘制直方图，显示连续数据的分布情形。hist函数的具体用法如下所示。  
+hist(x,breaks= ,freq=,...)  
+2.条形图  
+在R中，可以使用barplot函数绘制条形图，展示各类数据的数量分布情形。条形图的x轴是数据类别，  
+y轴是相应类别的频数。barplot函数的具体用法如下所示。  
+	barplot(height, beside =, horiz =, , ...)  
+3.饼图  
+R语言里，提供的绘制饼图函数为pie函数，其具体用法如下所示。  
+	pie(x, labels = names(x), radius = 0.8,...)  
+4.箱线图  
+R中，boxplot函数用于绘制箱型图。单独的箱线图的使用格式如下所示。  	boxplot(x,…,range=,width=,varwidth=,notch=,names=,horizontal=,add=FALSE,…)  
+5.散点图  
+在R语言中，绘制散点图的函数是plot函数，其具体用法如下所示。  
+plot(x, y, ...)  
+6.多变量相关矩阵图  
+在R的corrgram包中的corrgram函数可绘制多变量相关矩阵图。使用格式如下所示。  
+	corrgram(x,order=, lower.panel= , upper.panel=,text.panel=,diag.panel=,…)  
+7.核密度图  
+ sm.density.compare函数可以直接堆放多条密度曲线。使用格式如下。  
+	corrgram(x,order=, lower.panel= , upper.panel=,text.panel=,diag.panel=,…)  
+8.QQ图  
+QQ图的原理是如果一批数据服从某种理论分布，看其经验分布和理论分布是否一致。将排序后的数据  
+和理论分布的分位数进行比较后大致相等，说明了经验分布和理论分布相似。  
+使用格式如下：   
+	qqplot(x, y,,...); qqnorm(y,…);qqline(y)  
+（利用实际数据演示）  
+
+### 修改图形参数
+1.修改颜色  
+
+* R语言提供了自带的固定种类的颜色，主要涉及的是colors函数  
+* 通过palette函数固定调色板，只要设定好了调色板，它的取值就不会再改变（直到下一次重新设定调色板）。
+2.线条样式 
+
+![线条样式](J:\imag\line_style.png)
+
+3.修改文本属性  
+title函数，text函数和mtext函数可以在打开的画布上添加文字元素，其中title函数是在图形上添加标题元素，  
+text函数可以在图形中任意位置添加文本，mtext函数则是对图形的四条边上添加文本。
+
+![文本属性](J:\imag\text.png)
+
+4.设置坐标轴  
+绘图函数中，设置坐标轴展示和范围的参数 
+
+![设置坐标轴](J:\imag\label.png)
+
+axis函数来创建自定义的坐标轴
+
+![坐标轴刻度](J:\imag\axis.png)
+
+axis函数绘图例子：
+```{}
+plot(c(1:12), col="white", xaxt="n", yaxt="n", ann = FALSE)
+axis(1, at=1:12, col.axis="red", labels=month.abb)
+axis(2, at=seq(1,12,length=10), col.axis="red", labels=1:10, las=2)
+axis(3, at=seq(1,12,length=7), col.axis="blue", cex.axis=0.7, tck=-0.01, 
+labels = c("Mon", "Tues", "Wed", "Thu", "Fri", "Sat", "Sun")) 
+axis(4, at=seq(1,12,length=11), col.axis="blue", cex.axis=0.7, tck=-0.01, 
+labels=seq(0, 1, 0.1), las=2)
+```
+5.添加图例  
+legend函数的具体用法如下所示:  
+	legend(x, y = NULL, legend, col = par("col"), lty, pch, bty = "o",   
+	bg = par("bg"), ncol = 1, 	horiz=FALSE, xpd = FALSE, title = NULL)  
+
+legend函数参数:
+
+![图例设置](J:\imag\p_set.png)
+
+图例位置设置:
+
+![图例位置设置](J:\imag\legend_position.png)
+
+### 保存图形
+R语言提供将图片输出到屏幕的windows函数和X11函数，其中windows函数用于Windows系统，  
+X11函数用UNIX类型的系统的X11桌面系统。  
+windows()  %打开图形设备界面，UNIX用X11()  
+plot(iris)  % 在打开的图形界面绘制散点矩阵图  
+选择“文件”菜单下的“另存为”可将图片以不同的文件形式输出到屏幕。
+```{}
+#保存为jpg格式
+jpeg(filenames = 'C:\\Users\\45543\\Desktop\\iris.jpg')  # 保存的路径及文件名称、类型
+plot(iris[, 1:4])  # 绘制图形
+dev.off()  # 关闭关联
+```
+
+如果希望将当前画布的图形保存到指定路径，可以使用win.metafile函数，bmp函数，tiff函数，  
+svg函数，postscript函数，png函数，jpeg函数等将接下来的图形绘制到指定文件，并用dev.off函数结束关联。  
+
+### 作业
+要求完成7种图的绘制，并对图进行正确设置坐标轴、刻度、图例等。  
+
+## 高级绘图
+
+### 使用lattice包绘图
+lattice是由Deepayan Sarkar基于grid包的一套统计图形系统，它的图形设计理念来自于Cleveland的Trellis图形。  
+lattice包通过栅栏（trellis）图形来对多元变量关系进行直观展示，为单变量和多变量数据  
+的可视化提供了一个全面的图形系统。一些用标准绘图很难实功能，lattice却能很轻易地实现。  
+以mtcars数据集为例，绘制车身重量（wt）与每加仑汽油行驶的英里数（mpg）的散点图。  
+```{}
+library('lattice')
+xyplot(wt ~ mpg, data = mtcars, xlab = 'Weight', ylab = 'Miles per Gallon', 
+main ='lattice包绘制散点图')
+```
+1.图形参数
+
+* 可使用trellis.par.get函数获取参数列表，trellis.par.set函数则可以修改参数列表
+* names(trellis.par.get())  #查看参数列表的名称
+* show.settings()  #图形化显示所有参数
+* lattice图形参数是有层次的，可以将它们看作列表的列表，即可使用$对相关图形参数进行索引。
+* 在lattice包，默认以不同颜色去区分不同类别数据。
+lattice包中，可以通过管道符号（|）来添加条件变量v，其表达方式如下所示。  
+	graph_function(formula|v,data=,options)  
+例子： 
+以iris数据集为例，以Species（鸢尾花种类）为条件变量绘制Sepal.Length（花萼长度）  
+与Sepal.Width（花萼宽度）的散点图。 
+```{r}
+library(lattice)
+attach(iris)
+xyplot(Sepal.Length ~ Sepal.Width | Species)
+detach(iris)
+```
+2.条件变量
+
+* 在栅栏图形中，单个面板要依据条件变量的各个水平来创建。
+* 设小写字母（x，y）代表数值型变量，大写字母（A，B）代表类别型变量（因子），在高级绘图函数中，
+  表达式形式通常如下所示:x ~ y | A + B
+* 竖线左边的变量为主要变量，右边的变量为条件变量。主要变量将变量映射到每个面板的坐标轴上。
+3.面板函数
+在lattice包中，每个高级绘图函数都调用了一个默认的函数来绘制面板。默认函数：panel.graph_function   
+面板函数参数：
+
+![面板函数参数](J:\imag\panel_plot.png)
+
+使用xyplot函数绘制的散点图上添加回归线，光滑曲线，轴须和网格线，只需要将panel  
+参数设置为一个整合了多个面板函数的函数即可。  
+```{}
+library('lattice')
+my_panel<- function(x,y){panel.lmline(x, y, col = "red", lwd = 1,
+                                      lty = 2)  # 为数据增加一条回归线
+panel.loess(x,y)  # 增加一条光滑曲线
+panel.grid(h = -1, v = -1)  # 绘制网格线
+panel.rug(x, y)  # 在面板上增加轴须
+panel.xyplot(x, y)}  # 绘制散点图
+xyplot(mpg ~ wt, data = mtcars, xlab = "Weight", ylab = "Miles per Gallon",
+       main = "Miles per Gallon on Weight", panel = my_panel)
+```
+4.分组变量  
+通过添加条件变量（x ~ y | A + B），可以创建出各个水平下的面板。若想要把不同水平的图形结果叠加到一起，  
+则可以将变量设定为分组变量（group参数），其具体用法如下所示。  
+	graph_function(formula, data=, qroup=v)  
+例子：  
+以iris数据集为例，绘制Sepal.Length（花萼长度）与Sepal.Width（花萼宽度）的散点图，  
+并根据Species（鸢尾花种类）对数据进行分组。  
+```{}
+library('lattice')
+xyplot(Sepal.Length ~ Sepal.Width, group = Species, data = iris,
+       pch = 1:3, col = 1:3, main = 'Sepal.Length VS Sepal.Width',
+       key = list(space = "right", title = "Species", cex.title = 1, cex = 1,
+                text = list(levels(factor(iris$Species))),
+                points=list(pch = 1:3, col= 1:3)))
+
+```
+5.图形组合  
+以iris数据集为例，在同一个画布上分别Sepal.Length（花萼长度）与Sepal.Width（花萼宽度）的散点图，  
+其中左图是以Species（鸢尾花种类）为条件变量的栅栏图，右图是根据Species（鸢尾花种类）分组的散点图。  
+```{}
+library(lattice)
+graph1 <- xyplot(Sepal.Length ~ Sepal.Width | Species, 
+data = iris, main = '栅栏图')
+graph2 <- xyplot(Sepal.Length ~ Sepal.Width, group = Species, data = iris, 
+main = '散点图1')
+graph3 <- xyplot(Petal.Length ~ Petal.Width, group = Species, data = iris, 
+main = '散点图2')
+# split参数
+plot(graph1, split = c(1,1,3,1))
+plot(graph2, split = c(2,1,3,1), newpage = FALSE)
+plot(graph3, split = c(3,1,3,1), newpage = FALSE)
+# position参数，绘图效果同上
+plot(graph1, position = c(0, 0, 1/3, 1))
+plot(graph2, position = c(1/3, 0, 2/3, 1), newpage = FALSE)
+plot(graph3, position = c(2/3, 0, 1, 1), newpage = FALSE)
+```
+
+**lattice包中包含的基本绘图函数及相关绘图对象**
+
+![lattice基本绘图函数](J:\imag\lattice_plot.png)
+
+其通用函数格式如下所示:  
+	graph_function(formula, data = , options)  
+
+### 使用ggplot2包绘图
+ggplot2的核心理念是将绘图与数据分离，数据相关的绘图与数据无关的绘图分离，按图层作图。   
+1.qplot
+qplot的用法和R base包的plot函数很相似，其使用格式如下所示。  
+	qplot(x, y = NULL, ..., data, facets = NULL, margins = FALSE, geom = "auto",   
+	stat =	list(NULL), position = list(NULL), xlim = c(NA,NA), ylim = c(NA, NA),  
+	log = "", main = 	NULL,xlab = deparse(substitute(x)),   
+	ylab = deparse(substitute(y)), asp = NA)  
+qplot函数参数：
+
+![qplot函数参数](J:\imag\qplot.png)
+
+```{}
+library(ggplot2)
+qplot(Species, Sepal.Length, data = iris, geom = "boxplot", fill = Species,
+      main = "依据种类分组的花萼长度箱线图")
+qplot(Sepal.Length, Sepal.Width, data = iris, colour = Species, shape = Species,
+      main = "绘制花萼长度和花萼宽度的散点图")
+
+```
+2.ggplot2包的语言逻辑  
+通过plot与ggplot2的实际例子对比来说明。  
+```{}
+plot(iris$Sepal.Length, iris$Sepal.Width)
+library(ggplot2)
+ggplot(data= iris, aes(x = Sepal.Length, y = Sepal.Width)) +  #绘制底层画布
+geom_point(color = "darkred")  #在画布上添加点
+```
+ggplot的绘图有以下几个特点:
+
+* 有明确的起始（以ggplot函数开始）与终止（一句语句一幅图）。
+* ggplot2语句可以理解为一句语句绘制一幅图，然后进行图层叠加，而叠加是
+  通过“+”号把绘图语句拼接实现的。
+ggplot函数的使用格式如下所示:  
+	ggplot(data = NULL, mapping = aes(), ..., environment = parent.frame())  
+**示例：**  
+data = iris时，mapping = aes(x = Sepal.Length, y = Sepal.Width)表示将花萼长度作为x轴变量，花萼宽度作为y轴变量。如果需要将Species映射  
+到形状或者颜色属性，可以添加参数shape = Species或者colour = Species。  
+```{}
+ggplot(data = iris, aes(x = Sepal.Length, y = Sepal.Width, colour = Species, 
+          shape = Species))  # 底层画布
+```
+ggplot2中可用的几何对象函数:
+
+![ggplot几何对象函数](J:\imag\ggplot1.png)
+
+![ggplot几何对象函数](J:\imag\ggplot2.png)
+如果将数据定义在ggplot函数中，那么所有图层都可以共用这个数据；如果将数据定义在geom_point函数中，  
+那么这个数据就只供这个几何对象使用。  
+统计类型stat是指对数据所应用的统计类型/方法，ggplot2为每一种几何类型指定了一种默认的统计类型.  
+**标尺设置**
+
+* scale_*_continuous：将数据的连续取值映射为图形属性的取值。
+* scale_*_discrete：将数据的离散取值映射为图形属性的取值。
+* scale_*_identity：使用数据的值作为图形属性的取值。
+* scale_*_mannual：将数据的离散取值作为手工指定的图形属性的取值。
+
+示例：  
+随机从iris数据集的150个样本中抽取100个样本，并绘制条形图反映100个样本中各个鸢尾花种类的数量情况。  
+```{}
+set.seed(1234)  # 设置随机种子
+my_iris <- iris[sample(1:150, 100, replace = FALSE),]  # 随机抽样
+p <- ggplot(my_iris) + geom_bar(aes(x = Species, fill = Species))
+p$scales  # 查看p的标尺参数
+p + scale_fill_manual(
+    values = c("orange", "olivedrab", "navy"),  # 颜色设置
+    breaks = c("setosa", "versicolor", "virginica"),  # 图例和轴要显示的分段点
+    name = "my_Species",  # 图例和轴使用的名称
+    labels = c("set", "ver", "vir")  # 图例使用的标签
+```
+在这个实际例子，可以通过修改标尺参数做前后对比图，进而理解标尺在ggplot2包中的作用。  
+ggplot2使用技巧：
+
+* 使用scale_color_manual或scale_color_brewer函数修改图形的颜色。
+* ggplot2默认的坐标系是笛卡尔坐标系，
+* 分组绘图(facet_grid函数)
+* 保存图片（ggsave(filename,width,height,...)
+
+## 作业
+1.利用p2p数据，要求学生清洗数据，得到订单的最后统计数据。  
+2. 要求利用lattice,ggplot2分别画图（7种图）
+
+# 第四章 R语言实战 中医证型关联规则挖掘
+教学目的：  
+
+          1.借助三阴乳腺癌患者的病理信息，挖掘患者的症状与中医证型之
+            间的关联关系，从而了解数据挖掘常规流程；
+          2.掌握 Apriori 关联规则算法。 
+          
+教学重难点：  
+        
+         1.重点：掌握 Apriori 关联规则算法；  
+         2.难点：了解数据挖掘常规流程；  
+
+## 背景与挖掘目标
+
+## 分析方法与过程
+
+## 上机操作
+
+# 第五章 航空公司客户价值分析
+教学目的：  
+
+          1.熟悉航空公司客户价值分析的步骤与流程，了解RFM模型的基本原理；
+          2.掌握K-Means 算法的基本原理；
+          3.构建航空客户价值分析的关键特征，比较不同类别客户的客户价值，制定相应的营销策略。  
+教学重难点：  
+        
+         1.重点：掌握K-Means算法的基本原理；  
+         2.难点：了解RFM 模型的基本原理；  
+
+## 背景与挖掘目标
+
+## 分析方法与过程
+
+## 上机操作
+
+
+
+
